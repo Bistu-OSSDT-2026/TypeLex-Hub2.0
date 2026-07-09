@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背单词网页</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cute%20cartoon%20brown%20dog%20face%20wearing%20purple%20glasses%20friendly%20mascot%20icon%20style%20white%20background&image_size=square&size=256x256" alt="Logo" class="logo-img">
+                <h1>单词学习</h1>
+                <button id="settings-btn">设置</button>
+            </div>
+            <div class="word-type-selector">
+                <button id="cet4-btn">四级单词</button>
+                <button id="cet6-btn" class="active">六级单词</button>
+                <button id="ielts-btn">雅思单词</button>
+            </div>
+        </header>
+        <div id="settings-panel" class="settings-panel">
+            <h3>每天学习单词数量</h3>
+            <div class="settings-options">
+                <button class="setting-option" data-count="10">10</button>
+                <button class="setting-option" data-count="15">15</button>
+                <button class="setting-option" data-count="20">20</button>
+                <button class="setting-option" data-count="25">25</button>
+                <button class="setting-option" data-count="30">30</button>
+            </div>
+            <div class="word-count-info">
+                <p>四级单词总数：<span id="cet4-count">0</span></p>
+                <p>六级单词总数：<span id="cet6-count">0</span></p>
+                <p>雅思单词总数：<span id="ielts-count">0</span></p>
+            </div>
+            <div class="background-settings">
+                <h4>背景图设置</h4>
+                <button id="bg-upload-btn" class="bg-btn">上传背景图</button>
+                <button id="bg-set-default-btn" class="bg-btn">设为默认背景</button>
+                <button id="bg-reset-btn" class="bg-btn">恢复默认背景</button>
+                <input type="file" id="bg-upload" accept="image/*" style="display: none;">
+            </div>
+            <button id="close-settings">关闭</button>
+        </div>
+        <main>
+            <div class="word-display">
+                <h2 id="word">点击开始学习</h2>
+                <p id="meaning">准备好开始今天的学习了吗？</p>
+                <p id="example">例句：</p>
+            </div>
+            <div class="progress">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="progress-text">0/10</p>
+            </div>
+            <div class="controls">
+                <button id="start-btn">开始学习</button>
+                <button id="reset-btn">重置</button>
+            </div>
+            <div class="word-input-section" id="word-input-section" style="display: none;">
+                <input type="text" id="word-input" placeholder="请输入上述单词">
+                <button id="submit-btn">提交</button>
+                <div id="feedback" class="feedback"></div>
+            </div>
+        </main>
+        <footer>
+            <p>每天学习10个单词，坚持就是胜利！</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
