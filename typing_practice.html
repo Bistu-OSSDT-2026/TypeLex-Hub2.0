@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字大师 - 练习打字速度</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #312e81 0%, #3730a3 50%, #4f46e5 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #c7d2fe;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .stat-icon.yellow {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+
+        .stat-icon.green {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .stat-icon.purple {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a78bfa;
+        }
+
+        .stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #c7d2fe;
+            margin-bottom: 16px;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .diff-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .diff-btn.easy {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .diff-btn.easy:hover {
+            background: rgba(34, 197, 94, 0.3);
+        }
+
+        .diff-btn.easy.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .diff-btn.medium {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+
+        .diff-btn.medium:hover {
+            background: rgba(234, 179, 8, 0.3);
+        }
+
+        .diff-btn.medium.active {
+            background: #eab308;
+            color: white;
+        }
+
+        .diff-btn.hard {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .diff-btn.hard:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .diff-btn.hard.active {
+            background: #ef4444;
+            color: white;
+        }
+
+        .text-selector {
+            margin-bottom: 4px;
+        }
+
+        .text-selector label {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .text-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .text-option {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #d1d5db;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .text-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .text-option.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .text-display {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 24px;
+            min-height: 320px;
+        }
+
+        .text-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .text-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #c7d2fe;
+        }
+
+        .complete-badge {
+            padding: 6px 16px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .typing-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+
+        .typing-text span {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .char-correct {
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .char-wrong {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            text-decoration: underline;
+            text-decoration-color: #ef4444;
+        }
+
+        .char-current {
+            color: white;
+            background: #6366f1;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .char-pending {
+            color: #9ca3af;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-import, .btn-settings {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-import:hover, .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .theme-selector {
+            position: relative;
+        }
+
+        .theme-select {
+            appearance: none;
+            background: rgba(30, 27, 75, 0.8);
+            color: white;
+            padding: 8px 32px 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .theme-select option {
+            background: #1e1b4b;
+            color: white;
+        }
+
+        .text-selector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .btn-delete-theme {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete-theme:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1e1b4b;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            color: white;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-family: monospace;
+            font-size: 0.875rem;
+            resize: none;
+        }
+
+        .modal-body textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .modal-hint {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            color: #60a5fa;
+            font-size: 0.875rem;
+        }
+
+        .modal-hint code {
+            color: white;
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .modal-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 0.875rem;
+        }
+
+        .modal-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 0.875rem;
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .preset-item {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .preset-item:hover {
+            transform: scale(1.05);
+        }
+
+        .preset-item.active {
+            border-color: #6366f1;
+        }
+
+        .color-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .color-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .color-input-wrapper label {
+            display: block;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .color-input-wrapper input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .color-input-wrapper .color-value {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        .solid-color-input {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            position: relative;
+        }
+
+        .solid-color-value {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.875rem;
+            color: white;
+            pointer-events: none;
+        }
+
+        .image-upload-area {
+            width: 100%;
+            height: 96px;
+            border: 2px dashed #4b5563;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .image-upload-area:hover {
+            border-color: #6366f1;
+        }
+
+        .image-upload-area svg {
+            width: 32px;
+            height: 32px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .image-upload-area span {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 128px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .image-mode-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .image-mode-btn.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .modal-actions .btn-reset {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .modal-actions .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hint {
+            text-align: center;
+            color: #c7d2fe;
+            font-size: 0.9rem;
+        }
+
+        .hidden-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .typing-text {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M6 8h4M6 12h4M6 16h4M14 8h4M14 12h4M14 16h2"/>
+                </svg>
+            </div>
+            <h1>打字大师</h1>
+            <p class="subtitle">通过实时反馈练习打字速度</p>
+            <div class="header-buttons">
+                <button class="btn-import" id="import-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    导入主题
+                </button>
+                <button class="btn-settings" id="settings-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    背景设置
+                </button>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-time">--</div>
+                <div class="stat-label">时间 (秒)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-wpm">--</div>
+                <div class="stat-label">每分钟字数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-accuracy">--</div>
+                <div class="stat-label">准确率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-chars">--</div>
+                <div class="stat-label">字符数</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <div class="panel-title">选择难度</div>
+                <div class="theme-selector">
+                    <select id="theme-select" class="theme-select">
+                    </select>
+                </div>
+            </div>
+            <div class="difficulty-buttons">
+                <button class="diff-btn easy" data-difficulty="easy">简单</button>
+                <button class="diff-btn medium active" data-difficulty="medium">中等</button>
+                <button class="diff-btn hard" data-difficulty="hard">困难</button>
+            </div>
+            <div class="text-selector">
+                <div class="text-selector-header">
+                    <label>选择要练习的文本：</label>
+                    <button class="btn-delete-theme" id="delete-theme-btn" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        删除主题
+                    </button>
+                </div>
+                <div class="text-options" id="text-options"></div>
+            </div>
+        </div>
+
+        <div class="text-display">
+            <div class="text-header">
+                <span class="text-title" id="text-title">选择难度并点击开始</span>
+                <span id="complete-badge" style="display: none;" class="complete-badge">✅ 已完成</span>
+            </div>
+            <div class="typing-text" id="typing-text">
+                选择难度并点击开始按钮开始打字。
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="start-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                开始打字
+            </button>
+        </div>
+
+        <div class="hint" id="hint" style="display: none;">
+            开始打字即可开始练习。使用退格键纠正错误。
+        </div>
+
+        <input type="text" class="hidden-input" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+        <footer>
+            © 2026 打字大师。今天就提升你的打字技能。
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="import-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>导入主题</h2>
+                <button class="modal-close" id="modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-message"></div>
+                <textarea id="modal-textarea" placeholder='{"name": "主题名称", "texts": [...]}'></textarea>
+                <div class="modal-hint">
+                    <strong>格式说明：</strong><br>
+                    • <code>name</code> - 主题名称（必填）<br>
+                    • <code>description</code> - 主题描述（可选）<br>
+                    • <code>texts</code> - 文本列表（必填，至少一个）<br>
+                    • 每个文本包含 <code>title</code>、<code>content</code> 和 <code>difficulty</code><br>
+                    • difficulty 只能是 <code>easy</code>、<code>medium</code> 或 <code>hard</code>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" id="modal-sample">加载示例</button>
+                    <button class="modal-btn modal-btn-primary" id="modal-import">导入主题</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>背景设置</h2>
+                <button class="modal-close" id="settings-modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="settings-message"></div>
+                
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #c7d2fe; margin-bottom: 8px;">预设渐变</label>
+                    <div class="preset-grid" id="preset-grid"></div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #c7d2fe; margin-bottom: 8px;">自定义渐变</label>
+                    <div class="color-input-group">
+                        <div class="color-input-wrapper">
+                            <label>起始颜色</label>
+                            <input type="color" id="gradient-from" value="#1e1b4b">
+                            <span class="color-value" id="gradient-from-value">#1e1b4b</span>
+                        </div>
+                        <div class="color-input-wrapper">
+                            <label>结束颜色</label>
+                            <input type="color" id="gradient-to" value="#312e81">
+                            <span class="color-value" id="gradient-to-value">#312e81</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #c7d2fe; margin-bottom: 8px;">纯色背景</label>
+                    <div style="position: relative;">
+                        <input type="color" id="solid-color" value="#1e1b4b" class="solid-color-input">
+                        <span class="solid-color-value" id="solid-color-value">#1e1b4b</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #c7d2fe; margin-bottom: 8px;">图片背景</label>
+                    <div id="image-upload-container">
+                        <label class="image-upload-area">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            <span>点击上传图片</span>
+                            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+                    <div id="image-modes-container" style="display: none;" class="image-modes">
+                        <button class="image-mode-btn active" data-mode="cover">自适应</button>
+                        <button class="image-mode-btn" data-mode="contain">等比适配</button>
+                        <button class="image-mode-btn" data-mode="stretch">拉伸</button>
+                        <button class="image-mode-btn" data-mode="repeat">平铺</button>
+                        <button class="image-mode-btn" data-mode="center">居中</button>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn btn-reset" id="bg-reset-btn">重置</button>
+                    <button class="modal-btn modal-btn-primary" id="bg-confirm-btn">完成</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultTheme = {
+            id: 'default',
+            name: '默认主题',
+            description: '内置的基础练习文本',
+            texts: [
+                { id: 'easy-1', title: '猫咪', content: 'The quick brown fox jumps over the lazy dog.', difficulty: 'easy' },
+                { id: 'easy-2', title: '早晨', content: 'A beautiful morning with bright sunshine and birds singing.', difficulty: 'easy' },
+                { id: 'easy-3', title: '咖啡', content: 'A warm cup of coffee helps start the day right.', difficulty: 'easy' },
+                { id: 'easy-4', title: '书籍', content: 'Reading good books opens up new worlds and ideas.', difficulty: 'easy' },
+                { id: 'easy-5', title: '音乐', content: 'Listening to music relaxes the mind and lifts the spirit.', difficulty: 'easy' },
+                { id: 'medium-1', title: '编程', content: 'Programming is the art of telling a computer what to do. It requires logic, creativity, and attention to detail.', difficulty: 'medium' },
+                { id: 'medium-2', title: '自然', content: 'Nature provides us with everything we need. From the air we breathe to the food we eat, it sustains all life.', difficulty: 'medium' },
+                { id: 'medium-3', title: '学习', content: 'Continuous learning is essential in today fast-paced world. It keeps our minds sharp and our skills up to date.', difficulty: 'medium' },
+                { id: 'medium-4', title: '科技', content: 'Technology has transformed every aspect of modern life. It connects people across the globe and makes tasks easier.', difficulty: 'medium' },
+                { id: 'medium-5', title: '友谊', content: 'True friendship is a precious gift. It brings joy, support, and meaning to our lives through all seasons.', difficulty: 'medium' },
+                { id: 'hard-1', title: '人工智能', content: 'Artificial intelligence is revolutionizing industries from healthcare to finance. Machine learning algorithms analyze vast amounts of data to make predictions and decisions that were once thought impossible for computers.', difficulty: 'hard' },
+                { id: 'hard-2', title: '太空探索', content: 'Space exploration pushes the boundaries of human knowledge and capability. From landing on the moon to exploring distant planets, each mission brings us closer to understanding our place in the universe.', difficulty: 'hard' },
+                { id: 'hard-3', title: '气候变化', content: 'Climate change is one of the most pressing challenges of our time. It requires global cooperation, innovative solutions, and sustainable practices to protect our planet for future generations.', difficulty: 'hard' },
+                { id: 'hard-4', title: '数字转型', content: 'Digital transformation is reshaping businesses and societies. Cloud computing, big data analytics, and the Internet of Things are creating new opportunities and challenges for organizations worldwide.', difficulty: 'hard' },
+                { id: 'hard-5', title: '人类潜能', content: 'The potential of the human mind is limitless. With curiosity, perseverance, and passion, we can achieve extraordinary things. Every great discovery and invention started with a single idea and the courage to pursue it.', difficulty: 'hard' }
+            ]
+        };
+
+        const STORAGE_KEY = 'typing_themes';
+
+        function loadCustomThemes() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveCustomThemes(themes) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(themes));
+        }
+
+        let customThemes = loadCustomThemes();
+        let currentThemeId = 'default';
+        let currentDifficulty = 'medium';
+        let selectedTextId = null;
+        let currentText = null;
+        let userInput = '';
+        let startTime = null;
+        let endTime = null;
+        let status = 'idle';
+        let timerInterval = null;
+
+        const difficultyButtons = document.querySelectorAll('.diff-btn');
+        const textOptionsContainer = document.getElementById('text-options');
+        const startBtn = document.getElementById('start-btn');
+        const typingTextElement = document.getElementById('typing-text');
+        const textTitleElement = document.getElementById('text-title');
+        const completeBadge = document.getElementById('complete-badge');
+        const hint = document.getElementById('hint');
+        const hiddenInput = document.getElementById('hidden-input');
+        const themeSelect = document.getElementById('theme-select');
+        const deleteThemeBtn = document.getElementById('delete-theme-btn');
+        const importBtn = document.getElementById('import-btn');
+        const modalOverlay = document.getElementById('import-modal');
+        const modalCloseBtn = document.getElementById('modal-close');
+        const modalImportBtn = document.getElementById('modal-import');
+        const modalSampleBtn = document.getElementById('modal-sample');
+        const modalTextarea = document.getElementById('modal-textarea');
+        const modalMessage = document.getElementById('modal-message');
+
+        const statTime = document.getElementById('stat-time');
+        const statWpm = document.getElementById('stat-wpm');
+        const statAccuracy = document.getElementById('stat-accuracy');
+        const statChars = document.getElementById('stat-chars');
+
+        function getAllThemes() {
+            return [defaultTheme, ...customThemes];
+        }
+
+        function getCurrentTheme() {
+            return getAllThemes().find(t => t.id === currentThemeId);
+        }
+
+        function getTextsByDifficulty(difficulty) {
+            const theme = getCurrentTheme();
+            if (!theme) return [];
+            return theme.texts.filter(t => t.difficulty === difficulty);
+        }
+
+        function getRandomText(difficulty) {
+            const texts = getTextsByDifficulty(difficulty);
+            return texts[Math.floor(Math.random() * texts.length)];
+        }
+
+        function getTextById(id) {
+            return getAllThemes().flatMap(t => t.texts).find(t => t.id === id);
+        }
+
+        function renderThemeSelect() {
+            themeSelect.innerHTML = '';
+            getAllThemes().forEach(theme => {
+                const option = document.createElement('option');
+                option.value = theme.id;
+                option.textContent = theme.name;
+                themeSelect.appendChild(option);
+            });
+            themeSelect.value = currentThemeId;
+        }
+
+        function renderTextOptions() {
+            textOptionsContainer.innerHTML = '';
+            const texts = getTextsByDifficulty(currentDifficulty);
+            texts.forEach(text => {
+                const btn = document.createElement('button');
+                btn.className = `text-option ${selectedTextId === text.id ? 'active' : ''}`;
+                btn.textContent = text.title;
+                btn.onclick = () => selectText(text.id);
+                textOptionsContainer.appendChild(btn);
+            });
+            
+            deleteThemeBtn.style.display = currentThemeId === 'default' ? 'none' : 'flex';
+        }
+
+        function selectText(textId) {
+            selectedTextId = textId;
+            renderTextOptions();
+        }
+
+        function setTheme(themeId) {
+            currentThemeId = themeId;
+            selectedTextId = null;
+            renderThemeSelect();
+            renderTextOptions();
+            resetTyping();
+        }
+
+        function setDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            selectedTextId = null;
+            difficultyButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.difficulty === difficulty);
+            });
+            renderTextOptions();
+            resetTyping();
+        }
+
+        function deleteTheme() {
+            if (currentThemeId === 'default') return;
+            
+            customThemes = customThemes.filter(t => t.id !== currentThemeId);
+            saveCustomThemes(customThemes);
+            setTheme('default');
+        }
+
+        function importTheme(data) {
+            const newTheme = {
+                id: `custom-${Date.now()}`,
+                name: data.name,
+                description: data.description,
+                texts: data.texts.map((text, index) => ({
+                    id: `${Date.now()}-${index}`,
+                    title: text.title,
+                    content: text.content,
+                    difficulty: text.difficulty
+                }))
+            };
+            
+            customThemes.push(newTheme);
+            saveCustomThemes(customThemes);
+            return newTheme;
+        }
+
+        function startTyping() {
+            let text;
+            if (selectedTextId) {
+                text = getTextById(selectedTextId);
+            } else {
+                text = getRandomText(currentDifficulty);
+            }
+            
+            currentText = text;
+            userInput = '';
+            startTime = Date.now();
+            endTime = null;
+            status = 'typing';
+
+            textTitleElement.textContent = text.title;
+            completeBadge.style.display = 'none';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <polyline points="1 20 1 14 7 14"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                重置
+            `;
+            startBtn.classList.remove('btn-primary');
+            startBtn.classList.add('btn-secondary');
+            hint.style.display = 'block';
+            
+            hiddenInput.focus();
+            renderTypingText();
+            startTimer();
+        }
+
+        function resetTyping() {
+            currentText = null;
+            userInput = '';
+            startTime = null;
+            endTime = null;
+            status = 'idle';
+            stopTimer();
+            
+            textTitleElement.textContent = '选择难度并点击开始';
+            completeBadge.style.display = 'none';
+            typingTextElement.innerHTML = '选择难度并点击开始按钮开始打字。';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                开始打字
+            `;
+            startBtn.classList.remove('btn-secondary');
+            startBtn.classList.add('btn-primary');
+            hint.style.display = 'none';
+            
+            updateStats();
+        }
+
+        function completeTyping() {
+            endTime = Date.now();
+            status = 'completed';
+            stopTimer();
+            
+            completeBadge.style.display = 'inline-block';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <polyline points="1 20 1 14 7 14"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                新练习
+            `;
+            hint.style.display = 'none';
+            
+            updateStats();
+        }
+
+        function renderTypingText() {
+            if (!currentText) return;
+            
+            const chars = currentText.content.split('');
+            let html = '';
+            let inWord = false;
+            
+            for (let index = 0; index < chars.length; index++) {
+                const char = chars[index];
+                const isSpace = char === ' ';
+                
+                if (!isSpace && !inWord) {
+                    html += '<span style="display: inline-block; white-space: nowrap;">';
+                    inWord = true;
+                } else if (isSpace && inWord) {
+                    html += '</span>';
+                    inWord = false;
+                }
+                
+                let className = '';
+                let displayChar = char;
+                
+                if (index < userInput.length) {
+                    if (userInput[index] === char) {
+                        className = 'char-correct';
+                    } else {
+                        className = 'char-wrong';
+                    }
+                } else if (index === userInput.length) {
+                    className = 'char-current';
+                } else {
+                    className = 'char-pending';
+                }
+                
+                html += `<span class="${className}">${displayChar}</span>`;
+            }
+            
+            if (inWord) {
+                html += '</span>';
+            }
+            
+            typingTextElement.innerHTML = html;
+        }
+
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(updateStats, 100);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateStats() {
+            if (!currentText || !startTime) {
+                statTime.textContent = '--';
+                statWpm.textContent = '--';
+                statAccuracy.textContent = '--';
+                statChars.textContent = '--';
+                return;
+            }
+            
+            const elapsedTime = endTime ? (endTime - startTime) / 1000 : (Date.now() - startTime) / 1000;
+            const minutes = Math.max(elapsedTime / 60, 0.01);
+            
+            let correctCount = 0;
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === currentText.content[i]) {
+                    correctCount++;
+                }
+            }
+            
+            const wordsTyped = correctCount / 5;
+            const wpm = Math.round(wordsTyped / minutes);
+            const accuracy = userInput.length > 0 ? Math.round((correctCount / userInput.length) * 100) : 100;
+            
+            statTime.textContent = Math.round(elapsedTime);
+            statWpm.textContent = wpm;
+            statAccuracy.textContent = `${accuracy}%`;
+            statChars.textContent = `${userInput.length}/${currentText.content.length}`;
+        }
+
+        function handleKeyDown(e) {
+            if (status !== 'typing') return;
+            
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                userInput = userInput.slice(0, -1);
+                renderTypingText();
+                updateStats();
+                return;
+            }
+            
+            if (e.key.length === 1 || e.key === ' ') {
+                e.preventDefault();
+                if (userInput.length < currentText.content.length) {
+                    userInput += e.key;
+                    renderTypingText();
+                    updateStats();
+                    
+                    if (userInput === currentText.content) {
+                        completeTyping();
+                    }
+                }
+            }
+        }
+
+        function openModal() {
+            modalOverlay.classList.add('active');
+            modalTextarea.value = '';
+            modalMessage.innerHTML = '';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        function loadSample() {
+            const sample = `{
+  "name": "我的主题",
+  "description": "自定义练习文本",
+  "texts": [
+    {
+      "title": "示例文本1",
+      "content": "This is a sample typing text.",
+      "difficulty": "easy"
+    },
+    {
+      "title": "示例文本2",
+      "content": "Practice makes perfect. Keep typing every day.",
+      "difficulty": "medium"
+    }
+  ]
+}`;
+            modalTextarea.value = sample;
+            modalMessage.innerHTML = '';
+        }
+
+        function handleImport() {
+            const jsonInput = modalTextarea.value.trim();
+            if (!jsonInput) {
+                modalMessage.innerHTML = '<div class="modal-error">❌ 请输入 JSON 数据</div>';
+                return;
+            }
+
+            try {
+                const data = JSON.parse(jsonInput);
+                
+                if (!data.name) {
+                    modalMessage.innerHTML = '<div class="modal-error">❌ 主题名称不能为空</div>';
+                    return;
+                }
+
+                if (!Array.isArray(data.texts) || data.texts.length === 0) {
+                    modalMessage.innerHTML = '<div class="modal-error">❌ 请至少添加一个文本</div>';
+                    return;
+                }
+
+                const validDifficulties = ['easy', 'medium', 'hard'];
+                for (const text of data.texts) {
+                    if (!text.title || !text.content) {
+                        modalMessage.innerHTML = '<div class="modal-error">❌ 每个文本必须包含 title 和 content</div>';
+                        return;
+                    }
+                    if (!validDifficulties.includes(text.difficulty)) {
+                        modalMessage.innerHTML = '<div class="modal-error">❌ 难度只能是 easy、medium 或 hard</div>';
+                        return;
+                    }
+                }
+
+                const newTheme = importTheme(data);
+                modalMessage.innerHTML = `<div class="modal-success">✅ 主题「${newTheme.name}」导入成功！包含 ${newTheme.texts.length} 个文本。</div>`;
+                modalTextarea.value = '';
+                setTheme(newTheme.id);
+            } catch (e) {
+                modalMessage.innerHTML = '<div class="modal-error">❌ JSON 格式错误，请检查输入</div>';
+            }
+        }
+
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setDifficulty(btn.dataset.difficulty);
+            });
+        });
+
+        themeSelect.addEventListener('change', () => {
+            setTheme(themeSelect.value);
+        });
+
+        deleteThemeBtn.addEventListener('click', deleteTheme);
+
+        importBtn.addEventListener('click', openModal);
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalSampleBtn.addEventListener('click', loadSample);
+        modalImportBtn.addEventListener('click', handleImport);
+
+        startBtn.addEventListener('click', () => {
+            if (status === 'idle') {
+                startTyping();
+            } else {
+                resetTyping();
+            }
+        });
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        renderThemeSelect();
+        renderTextOptions();
+
+        const presetGradients = [
+            { name: '深蓝紫', from: '#1e1b4b', to: '#312e81', direction: 'to-br' },
+            { name: '极光', from: '#0f0c29', to: '#302b63', direction: 'to-r' },
+            { name: '日落', from: '#f093fb', to: '#f5576c', direction: 'to-br' },
+            { name: '海洋', from: '#2193b0', to: '#6dd5ed', direction: 'to-r' },
+            { name: '森林', from: '#134e5e', to: '#71b280', direction: 'to-br' },
+            { name: '暖橙', from: '#ff9a9e', to: '#fecfef', direction: 'to-r' },
+            { name: '星空', from: '#0c0c0c', to: '#1a1a2e', direction: 'to-b' },
+            { name: '薄荷', from: '#a8edea', to: '#fed6e3', direction: 'to-br' }
+        ];
+
+        const BG_STORAGE_KEY = 'typing_background';
+        
+        const defaultBgConfig = {
+            type: 'gradient',
+            gradient: {
+                from: '#1e1b4b',
+                to: '#312e81',
+                direction: 'to-br'
+            },
+            color: '#1e1b4b',
+            image: '',
+            imageMode: 'cover'
+        };
+
+        function loadBgConfig() {
+            try {
+                const data = localStorage.getItem(BG_STORAGE_KEY);
+                return data ? JSON.parse(data) : { ...defaultBgConfig };
+            } catch {
+                return { ...defaultBgConfig };
+            }
+        }
+
+        function saveBgConfig(config) {
+            localStorage.setItem(BG_STORAGE_KEY, JSON.stringify(config));
+        }
+
+        function applyBackground(config) {
+            const body = document.body;
+            body.style.background = '';
+            body.style.backgroundColor = '';
+            body.style.backgroundImage = '';
+            body.style.backgroundSize = '';
+            body.style.backgroundRepeat = '';
+            body.style.backgroundPosition = '';
+
+            if (config.type === 'gradient') {
+                body.style.background = `linear-gradient(${config.gradient.direction}, ${config.gradient.from}, ${config.gradient.to})`;
+            } else if (config.type === 'color') {
+                body.style.backgroundColor = config.color;
+            } else if (config.type === 'image') {
+                body.style.backgroundImage = `url(${config.image})`;
+                body.style.backgroundSize = getBgSize(config.imageMode);
+                body.style.backgroundRepeat = config.imageMode === 'repeat' ? 'repeat' : 'no-repeat';
+                body.style.backgroundPosition = 'center';
+            }
+        }
+
+        function getBgSize(mode) {
+            switch (mode) {
+                case 'cover': return 'cover';
+                case 'contain': return 'contain';
+                case 'stretch': return '100% 100%';
+                case 'repeat': return 'auto';
+                case 'center': return 'auto';
+                default: return 'cover';
+            }
+        }
+
+        let bgConfig = loadBgConfig();
+
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsModalClose = document.getElementById('settings-modal-close');
+        const presetGrid = document.getElementById('preset-grid');
+        const gradientFromInput = document.getElementById('gradient-from');
+        const gradientToInput = document.getElementById('gradient-to');
+        const gradientFromValue = document.getElementById('gradient-from-value');
+        const gradientToValue = document.getElementById('gradient-to-value');
+        const solidColorInput = document.getElementById('solid-color');
+        const solidColorValue = document.getElementById('solid-color-value');
+        const imageUpload = document.getElementById('image-upload');
+        const imageUploadContainer = document.getElementById('image-upload-container');
+        const imageModesContainer = document.getElementById('image-modes-container');
+        const bgResetBtn = document.getElementById('bg-reset-btn');
+        const bgConfirmBtn = document.getElementById('bg-confirm-btn');
+        const settingsMessage = document.getElementById('settings-message');
+
+        function renderPresetGrid() {
+            presetGrid.innerHTML = '';
+            presetGradients.forEach((preset, index) => {
+                const item = document.createElement('div');
+                item.className = `preset-item ${bgConfig.type === 'gradient' && bgConfig.gradient.from === preset.from && bgConfig.gradient.to === preset.to ? 'active' : ''}`;
+                item.style.background = `linear-gradient(${preset.direction}, ${preset.from}, ${preset.to})`;
+                item.title = preset.name;
+                item.onclick = () => {
+                    bgConfig.type = 'gradient';
+                    bgConfig.gradient = { from: preset.from, to: preset.to, direction: preset.direction };
+                    updateInputValues();
+                    applyBackground(bgConfig);
+                    saveBgConfig(bgConfig);
+                    renderPresetGrid();
+                };
+                presetGrid.appendChild(item);
+            });
+        }
+
+        function updateInputValues() {
+            gradientFromInput.value = bgConfig.gradient.from;
+            gradientToInput.value = bgConfig.gradient.to;
+            gradientFromValue.textContent = bgConfig.gradient.from;
+            gradientToValue.textContent = bgConfig.gradient.to;
+            solidColorInput.value = bgConfig.color;
+            solidColorValue.textContent = bgConfig.color;
+
+            if (bgConfig.image) {
+                imageUploadContainer.innerHTML = `
+                    <div class="image-preview">
+                        <img src="${bgConfig.image}" alt="背景预览">
+                        <button class="remove-btn" id="remove-image-btn">×</button>
+                    </div>
+                `;
+                imageModesContainer.style.display = 'flex';
+                document.querySelectorAll('.image-mode-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === bgConfig.imageMode);
+                });
+                document.getElementById('remove-image-btn').addEventListener('click', clearImage);
+            } else {
+                imageUploadContainer.innerHTML = `
+                    <label class="image-upload-area">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        <span>点击上传图片</span>
+                        <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                    </label>
+                `;
+                imageModesContainer.style.display = 'none';
+                document.getElementById('image-upload').addEventListener('change', handleImageUpload);
+            }
+        }
+
+        function clearImage() {
+            bgConfig.type = 'gradient';
+            bgConfig.image = '';
+            updateInputValues();
+            applyBackground(bgConfig);
+            saveBgConfig(bgConfig);
+            renderPresetGrid();
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                settingsMessage.innerHTML = '<div class="modal-error">❌ 请上传图片文件</div>';
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                settingsMessage.innerHTML = '<div class="modal-error">❌ 图片大小不能超过 5MB</div>';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                bgConfig.type = 'image';
+                bgConfig.image = event.target?.result;
+                updateInputValues();
+                applyBackground(bgConfig);
+                saveBgConfig(bgConfig);
+                settingsMessage.innerHTML = '';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openSettingsModal() {
+            settingsModal.classList.add('active');
+            settingsMessage.innerHTML = '';
+            renderPresetGrid();
+            updateInputValues();
+        }
+
+        function closeSettingsModal() {
+            settingsModal.classList.remove('active');
+        }
+
+        function resetBackground() {
+            bgConfig = { ...defaultBgConfig };
+            updateInputValues();
+            applyBackground(bgConfig);
+            saveBgConfig(bgConfig);
+            renderPresetGrid();
+            settingsMessage.innerHTML = '';
+        }
+
+        gradientFromInput.addEventListener('input', (e) => {
+            bgConfig.type = 'gradient';
+            bgConfig.gradient.from = e.target.value;
+            gradientFromValue.textContent = e.target.value;
+            applyBackground(bgConfig);
+            saveBgConfig(bgConfig);
+            renderPresetGrid();
+        });
+
+        gradientToInput.addEventListener('input', (e) => {
+            bgConfig.type = 'gradient';
+            bgConfig.gradient.to = e.target.value;
+            gradientToValue.textContent = e.target.value;
+            applyBackground(bgConfig);
+            saveBgConfig(bgConfig);
+            renderPresetGrid();
+        });
+
+        solidColorInput.addEventListener('input', (e) => {
+            bgConfig.type = 'color';
+            bgConfig.color = e.target.value;
+            solidColorValue.textContent = e.target.value;
+            applyBackground(bgConfig);
+            saveBgConfig(bgConfig);
+            renderPresetGrid();
+        });
+
+        document.querySelectorAll('.image-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                bgConfig.imageMode = btn.dataset.mode;
+                document.querySelectorAll('.image-mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyBackground(bgConfig);
+                saveBgConfig(bgConfig);
+            });
+        });
+
+        settingsBtn.addEventListener('click', openSettingsModal);
+        settingsModalClose.addEventListener('click', closeSettingsModal);
+        bgResetBtn.addEventListener('click', resetBackground);
+        bgConfirmBtn.addEventListener('click', closeSettingsModal);
+
+        applyBackground(bgConfig);
+    </script>
+</body>
+</html>
