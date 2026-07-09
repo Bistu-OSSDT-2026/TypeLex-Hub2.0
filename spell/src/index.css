@@ -42,3 +42,265 @@
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+/* ===== TypeLex-Hub2.0 背景图和棕黄色主题 ===== */
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(rgba(255, 246, 230, 0.88), rgba(255, 246, 230, 0.88)),
+    url('/assets/study-bg.png') center center / cover fixed no-repeat !important;
+  color: #4b2f1f !important;
+}
+
+/* 页面整体背景 */
+#root,
+.min-h-screen,
+.bg-white,
+.bg-gray-50,
+.bg-slate-50,
+.bg-blue-50 {
+  background:
+    linear-gradient(rgba(255, 246, 230, 0.88), rgba(255, 246, 230, 0.88)),
+    url('/assets/study-bg.png') center center / cover fixed no-repeat !important;
+}
+
+/* 卡片、面板、主要模块 */
+.card,
+.panel,
+.container,
+section,
+main,
+.rounded,
+.rounded-lg,
+.rounded-xl,
+.shadow,
+.shadow-lg {
+  background-color: rgba(255, 248, 235, 0.9) !important;
+  border-color: #d9b382 !important;
+  box-shadow: 0 8px 20px rgba(92, 58, 33, 0.15) !important;
+}
+
+/* 标题和文字 */
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+label {
+  color: #4b2f1f;
+}
+
+/* 按钮 */
+button {
+  background-color: #8b5e34 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+button:hover {
+  background-color: #5c3a21 !important;
+}
+
+/* 输入框 */
+input,
+textarea {
+  background-color: #fffaf0 !important;
+  color: #4b2f1f !important;
+  border: 1px solid #d9b382 !important;
+}
+
+/* 原来的蓝色、紫色主题统一改成棕色 */
+.bg-blue-600,
+.bg-blue-500,
+.bg-indigo-600,
+.bg-indigo-500,
+.bg-purple-600,
+.bg-purple-500 {
+  background-color: #8b5e34 !important;
+}
+
+.bg-blue-100,
+.bg-indigo-100,
+.bg-purple-100,
+.bg-gray-100 {
+  background-color: #f3dfbf !important;
+}
+
+.text-blue-500,
+.text-blue-600,
+.text-indigo-600,
+.text-purple-600,
+a {
+  color: #8b5e34 !important;
+}
+/* ===== 提高文字可读性 ===== */
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+label,
+div {
+  color: #4b2f1f !important;
+}
+
+/* 顶部主标题 */
+.text-white,
+.text-gray-100,
+.text-gray-200,
+.text-slate-100,
+.text-slate-200 {
+  color: #4b2f1f !important;
+}
+
+/* 副标题和说明文字 */
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-slate-400,
+.text-slate-500,
+.text-slate-600 {
+  color: #6b4a2b !important;
+}
+
+/* 卡片内部文字 */
+.card *,
+.rounded *,
+.rounded-lg *,
+.rounded-xl *,
+.shadow * {
+  color: #4b2f1f !important;
+}
+
+/* 按钮文字保持白色 */
+button,
+button * {
+  color: #ffffff !important;
+}
+/* ===== 修正浅色按钮和文字不清晰的问题 ===== */
+
+/* 普通文字统一加深 */
+body,
+#root,
+main,
+section,
+div,
+p,
+span,
+label {
+  color: #4b2f1f !important;
+}
+
+/* 标题颜色 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #3b2415 !important;
+}
+
+/* 普通按钮：浅棕背景 + 深棕文字 */
+button {
+  background-color: rgba(255, 248, 235, 0.92) !important;
+  color: #4b2f1f !important;
+  border: 1px solid #d9b382 !important;
+  box-shadow: 0 6px 14px rgba(92, 58, 33, 0.12) !important;
+}
+
+/* 按钮里的图标和文字也改成深色 */
+button * {
+  color: #4b2f1f !important;
+}
+
+/* 鼠标移上按钮时 */
+button:hover {
+  background-color: #f3dfbf !important;
+  color: #3b2415 !important;
+}
+
+/* 被选中的按钮，保持深棕色，文字用白色 */
+button.active,
+button.selected,
+button[aria-pressed="true"],
+button[data-state="active"] {
+  background-color: #8b5e34 !important;
+  color: #ffffff !important;
+  border-color: #8b5e34 !important;
+}
+
+button.active *,
+button.selected *,
+button[aria-pressed="true"] *,
+button[data-state="active"] * {
+  color: #ffffff !important;
+}
+
+/* 禁用按钮：不要白字，改成浅棕底 + 深棕字 */
+button:disabled,
+button[disabled] {
+  background-color: rgba(243, 223, 191, 0.75) !important;
+  color: #8b5e34 !important;
+  border: 1px solid #e0c59f !important;
+  opacity: 1 !important;
+}
+
+button:disabled *,
+button[disabled] * {
+  color: #8b5e34 !important;
+}
+
+/* 下拉框、选择框文字 */
+select,
+option {
+  background-color: #fffaf0 !important;
+  color: #4b2f1f !important;
+  border: 1px solid #d9b382 !important;
+}
+
+/* 统计卡片里的数字和说明 */
+.rounded *,
+.rounded-lg *,
+.rounded-xl *,
+.shadow *,
+.shadow-lg * {
+  color: #4b2f1f !important;
+}
+
+/* 让浅色说明文字也清楚 */
+.text-white,
+.text-gray-100,
+.text-gray-200,
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-slate-100,
+.text-slate-200,
+.text-slate-300,
+.text-slate-400,
+.text-slate-500 {
+  color: #6b4a2b !important;
+}
+
+/* 紫色标题、副标题改成棕色系 */
+.text-purple-400,
+.text-purple-500,
+.text-purple-600,
+.text-indigo-400,
+.text-indigo-500,
+.text-indigo-600,
+.text-blue-400,
+.text-blue-500,
+.text-blue-600 {
+  color: #8b5e34 !important;
+}
