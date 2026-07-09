@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字大师 - 练习打字速度</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-image: url('WoofHomepage.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            color: #5D4037;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #8D6E63 0%, #5D4037 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 40px rgba(93, 64, 55, 0.3);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #8D6E63;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1);
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .stat-icon.blue {
+            background: rgba(139, 90, 43, 0.15);
+            color: #5D4037;
+        }
+
+        .stat-icon.yellow {
+            background: rgba(139, 90, 43, 0.15);
+            color: #5D4037;
+        }
+
+        .stat-icon.green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #2E7D32;
+        }
+
+        .stat-icon.purple {
+            background: rgba(139, 90, 43, 0.15);
+            color: #5D4037;
+        }
+
+        .stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #8D6E63;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1);
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #5D4037;
+            margin-bottom: 16px;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .diff-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .diff-btn.easy {
+            background: rgba(34, 197, 94, 0.15);
+            color: #2E7D32;
+        }
+
+        .diff-btn.easy:hover {
+            background: rgba(34, 197, 94, 0.25);
+        }
+
+        .diff-btn.easy.active {
+            background: #2E7D32;
+            color: white;
+        }
+
+        .diff-btn.medium {
+            background: rgba(139, 90, 43, 0.15);
+            color: #5D4037;
+        }
+
+        .diff-btn.medium:hover {
+            background: rgba(139, 90, 43, 0.25);
+        }
+
+        .diff-btn.medium.active {
+            background: #5D4037;
+            color: white;
+        }
+
+        .diff-btn.hard {
+            background: rgba(239, 68, 68, 0.15);
+            color: #C62828;
+        }
+
+        .diff-btn.hard:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .diff-btn.hard.active {
+            background: #C62828;
+            color: white;
+        }
+
+        .text-selector {
+            margin-bottom: 4px;
+        }
+
+        .text-selector label {
+            font-size: 0.875rem;
+            color: #8D6E63;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .text-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .text-option {
+            padding: 8px 16px;
+            background: rgba(139, 90, 43, 0.1);
+            color: #5D4037;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .text-option:hover {
+            background: rgba(139, 90, 43, 0.2);
+        }
+
+        .text-option.active {
+            background: #8D6E63;
+            color: white;
+        }
+
+        .text-display {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 24px;
+            min-height: 320px;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1);
+        }
+
+        .text-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .text-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #5D4037;
+        }
+
+        .complete-badge {
+            padding: 6px 16px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #2E7D32;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .typing-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+
+        .typing-text span {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .char-correct {
+            color: #2E7D32;
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .char-wrong {
+            color: #C62828;
+            background: rgba(239, 68, 68, 0.15);
+            text-decoration: underline;
+            text-decoration-color: #C62828;
+        }
+
+        .char-current {
+            color: white;
+            background: #8D6E63;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .char-pending {
+            color: #A1887F;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8D6E63 0%, #5D4037 100%);
+            color: white;
+            box-shadow: 0 10px 40px rgba(93, 64, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(93, 64, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(139, 90, 43, 0.15);
+            color: #5D4037;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 90, 43, 0.25);
+        }
+
+        .btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        
+
+        .hint {
+            text-align: center;
+            color: #8D6E63;
+            font-size: 0.9rem;
+        }
+
+        .hidden-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8D6E63;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .typing-text {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M6 8h4M6 12h4M6 16h4M14 8h4M14 12h4M14 16h2"/>
+                </svg>
+            </div>
+            <h1>打字大师</h1>
+            <p class="subtitle">通过实时反馈练习打字速度</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-time">--</div>
+                <div class="stat-label">时间 (秒)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-wpm">--</div>
+                <div class="stat-label">每分钟字数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-accuracy">--</div>
+                <div class="stat-label">准确率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="stat-chars">--</div>
+                <div class="stat-label">字符数</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-title">选择难度</div>
+            <div class="difficulty-buttons">
+                <button class="diff-btn easy" data-difficulty="easy">简单</button>
+                <button class="diff-btn medium active" data-difficulty="medium">中等</button>
+                <button class="diff-btn hard" data-difficulty="hard">困难</button>
+            </div>
+            <div class="text-selector">
+                <label>选择要练习的文本：</label>
+                <div class="text-options" id="text-options"></div>
+            </div>
+        </div>
+
+        <div class="text-display">
+            <div class="text-header">
+                <span class="text-title" id="text-title">选择难度并点击开始</span>
+                <span id="complete-badge" style="display: none;" class="complete-badge">✅ 已完成</span>
+            </div>
+            <div class="typing-text" id="typing-text">
+                选择难度并点击开始按钮开始打字。
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="start-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                开始打字
+            </button>
+        </div>
+
+        <div class="hint" id="hint" style="display: none;">
+            开始打字即可开始练习。使用退格键纠正错误。
+        </div>
+
+        <input type="text" class="hidden-input" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+        <footer>
+            © 2026 打字大师。今天就提升你的打字技能。
+        </footer>
+    </div>
+
+    <script>
+        const defaultTheme = {
+            id: 'default',
+            name: '默认主题',
+            description: '内置的基础练习文本',
+            texts: [
+                { id: 'easy-1', title: '猫咪', content: 'The quick brown fox jumps over the lazy dog.', difficulty: 'easy' },
+                { id: 'easy-2', title: '早晨', content: 'A beautiful morning with bright sunshine and birds singing.', difficulty: 'easy' },
+                { id: 'easy-3', title: '咖啡', content: 'A warm cup of coffee helps start the day right.', difficulty: 'easy' },
+                { id: 'easy-4', title: '书籍', content: 'Reading good books opens up new worlds and ideas.', difficulty: 'easy' },
+                { id: 'easy-5', title: '音乐', content: 'Listening to music relaxes the mind and lifts the spirit.', difficulty: 'easy' },
+                { id: 'medium-1', title: '编程', content: 'Programming is the art of telling a computer what to do. It requires logic, creativity, and attention to detail.', difficulty: 'medium' },
+                { id: 'medium-2', title: '自然', content: 'Nature provides us with everything we need. From the air we breathe to the food we eat, it sustains all life.', difficulty: 'medium' },
+                { id: 'medium-3', title: '学习', content: 'Continuous learning is essential in today fast-paced world. It keeps our minds sharp and our skills up to date.', difficulty: 'medium' },
+                { id: 'medium-4', title: '科技', content: 'Technology has transformed every aspect of modern life. It connects people across the globe and makes tasks easier.', difficulty: 'medium' },
+                { id: 'medium-5', title: '友谊', content: 'True friendship is a precious gift. It brings joy, support, and meaning to our lives through all seasons.', difficulty: 'medium' },
+                { id: 'hard-1', title: '人工智能', content: 'Artificial intelligence is revolutionizing industries from healthcare to finance. Machine learning algorithms analyze vast amounts of data to make predictions and decisions that were once thought impossible for computers.', difficulty: 'hard' },
+                { id: 'hard-2', title: '太空探索', content: 'Space exploration pushes the boundaries of human knowledge and capability. From landing on the moon to exploring distant planets, each mission brings us closer to understanding our place in the universe.', difficulty: 'hard' },
+                { id: 'hard-3', title: '气候变化', content: 'Climate change is one of the most pressing challenges of our time. It requires global cooperation, innovative solutions, and sustainable practices to protect our planet for future generations.', difficulty: 'hard' },
+                { id: 'hard-4', title: '数字转型', content: 'Digital transformation is reshaping businesses and societies. Cloud computing, big data analytics, and the Internet of Things are creating new opportunities and challenges for organizations worldwide.', difficulty: 'hard' },
+                { id: 'hard-5', title: '人类潜能', content: 'The potential of the human mind is limitless. With curiosity, perseverance, and passion, we can achieve extraordinary things. Every great discovery and invention started with a single idea and the courage to pursue it.', difficulty: 'hard' }
+            ]
+        };
+
+        let currentDifficulty = 'medium';
+        let selectedTextId = null;
+        let currentText = null;
+        let userInput = '';
+        let startTime = null;
+        let endTime = null;
+        let status = 'idle';
+        let timerInterval = null;
+
+        const difficultyButtons = document.querySelectorAll('.diff-btn');
+        const textOptionsContainer = document.getElementById('text-options');
+        const startBtn = document.getElementById('start-btn');
+        const typingTextElement = document.getElementById('typing-text');
+        const textTitleElement = document.getElementById('text-title');
+        const completeBadge = document.getElementById('complete-badge');
+        const hint = document.getElementById('hint');
+        const hiddenInput = document.getElementById('hidden-input');
+
+        const statTime = document.getElementById('stat-time');
+        const statWpm = document.getElementById('stat-wpm');
+        const statAccuracy = document.getElementById('stat-accuracy');
+        const statChars = document.getElementById('stat-chars');
+
+        function getTextsByDifficulty(difficulty) {
+            return defaultTheme.texts.filter(t => t.difficulty === difficulty);
+        }
+
+        function getRandomText(difficulty) {
+            const texts = getTextsByDifficulty(difficulty);
+            return texts[Math.floor(Math.random() * texts.length)];
+        }
+
+        function getTextById(id) {
+            return defaultTheme.texts.find(t => t.id === id);
+        }
+
+        function renderTextOptions() {
+            textOptionsContainer.innerHTML = '';
+            const texts = getTextsByDifficulty(currentDifficulty);
+            texts.forEach(text => {
+                const btn = document.createElement('button');
+                btn.className = `text-option ${selectedTextId === text.id ? 'active' : ''}`;
+                btn.textContent = text.title;
+                btn.onclick = () => selectText(text.id);
+                textOptionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectText(textId) {
+            selectedTextId = textId;
+            renderTextOptions();
+        }
+
+        function setDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            selectedTextId = null;
+            difficultyButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.difficulty === difficulty);
+            });
+            renderTextOptions();
+            resetTyping();
+        }
+
+        function startTyping() {
+            let text;
+            if (selectedTextId) {
+                text = getTextById(selectedTextId);
+            } else {
+                text = getRandomText(currentDifficulty);
+            }
+            
+            currentText = text;
+            userInput = '';
+            startTime = Date.now();
+            endTime = null;
+            status = 'typing';
+
+            textTitleElement.textContent = text.title;
+            completeBadge.style.display = 'none';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <polyline points="1 20 1 14 7 14"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                重置
+            `;
+            startBtn.classList.remove('btn-primary');
+            startBtn.classList.add('btn-secondary');
+            hint.style.display = 'block';
+            
+            hiddenInput.focus();
+            renderTypingText();
+            startTimer();
+        }
+
+        function resetTyping() {
+            currentText = null;
+            userInput = '';
+            startTime = null;
+            endTime = null;
+            status = 'idle';
+            stopTimer();
+            
+            textTitleElement.textContent = '选择难度并点击开始';
+            completeBadge.style.display = 'none';
+            typingTextElement.innerHTML = '选择难度并点击开始按钮开始打字。';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                开始打字
+            `;
+            startBtn.classList.remove('btn-secondary');
+            startBtn.classList.add('btn-primary');
+            hint.style.display = 'none';
+            
+            updateStats();
+        }
+
+        function completeTyping() {
+            endTime = Date.now();
+            status = 'completed';
+            stopTimer();
+            
+            completeBadge.style.display = 'inline-block';
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <polyline points="1 20 1 14 7 14"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                新练习
+            `;
+            hint.style.display = 'none';
+            
+            updateStats();
+        }
+
+        function renderTypingText() {
+            if (!currentText) return;
+            
+            const chars = currentText.content.split('');
+            let html = '';
+            let inWord = false;
+            
+            for (let index = 0; index < chars.length; index++) {
+                const char = chars[index];
+                const isSpace = char === ' ';
+                
+                if (!isSpace && !inWord) {
+                    html += '<span style="display: inline-block; white-space: nowrap;">';
+                    inWord = true;
+                } else if (isSpace && inWord) {
+                    html += '</span>';
+                    inWord = false;
+                }
+                
+                let className = '';
+                let displayChar = char;
+                
+                if (index < userInput.length) {
+                    if (userInput[index] === char) {
+                        className = 'char-correct';
+                    } else {
+                        className = 'char-wrong';
+                    }
+                } else if (index === userInput.length) {
+                    className = 'char-current';
+                } else {
+                    className = 'char-pending';
+                }
+                
+                html += `<span class="${className}">${displayChar}</span>`;
+            }
+            
+            if (inWord) {
+                html += '</span>';
+            }
+            
+            typingTextElement.innerHTML = html;
+        }
+
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(updateStats, 100);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateStats() {
+            if (!currentText || !startTime) {
+                statTime.textContent = '--';
+                statWpm.textContent = '--';
+                statAccuracy.textContent = '--';
+                statChars.textContent = '--';
+                return;
+            }
+            
+            const elapsedTime = endTime ? (endTime - startTime) / 1000 : (Date.now() - startTime) / 1000;
+            const minutes = Math.max(elapsedTime / 60, 0.01);
+            
+            let correctCount = 0;
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === currentText.content[i]) {
+                    correctCount++;
+                }
+            }
+            
+            const wordsTyped = correctCount / 5;
+            const wpm = Math.round(wordsTyped / minutes);
+            const accuracy = userInput.length > 0 ? Math.round((correctCount / userInput.length) * 100) : 100;
+            
+            statTime.textContent = Math.round(elapsedTime);
+            statWpm.textContent = wpm;
+            statAccuracy.textContent = `${accuracy}%`;
+            statChars.textContent = `${userInput.length}/${currentText.content.length}`;
+        }
+
+        function handleKeyDown(e) {
+            if (status !== 'typing') return;
+            
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                userInput = userInput.slice(0, -1);
+                renderTypingText();
+                updateStats();
+                return;
+            }
+            
+            if (e.key.length === 1 || e.key === ' ') {
+                e.preventDefault();
+                if (userInput.length < currentText.content.length) {
+                    userInput += e.key;
+                    renderTypingText();
+                    updateStats();
+                    
+                    if (userInput === currentText.content) {
+                        completeTyping();
+                    }
+                }
+            }
+        }
+
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setDifficulty(btn.dataset.difficulty);
+            });
+        });
+
+        startBtn.addEventListener('click', () => {
+            if (status === 'idle') {
+                startTyping();
+            } else {
+                resetTyping();
+            }
+        });
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        renderTextOptions();
+    </script>
+</body>
+</html>
